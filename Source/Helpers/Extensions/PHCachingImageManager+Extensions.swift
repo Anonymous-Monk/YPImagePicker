@@ -25,14 +25,15 @@ extension PHCachingImageManager {
 					targetSize: CGSize,
 					callback: @escaping (UIImage, [String: Any]) -> Void) {
         let options = photoImageRequestOptions()
-        let exifs = self.metadataForImageData(data: data)
-        callback(image, exifs)
+       
     
         // Fetch Highiest quality image possible.
-//        requestImageData(for: asset, options: options) { data, _, _, _ in
-//            if let data = data, let image = UIImage(data: data)?.resetOrientation() {
-//
-//                // Crop the high quality image manually.
+        requestImageData(for: asset, options: options) { data, _, _, _ in
+            if let data = data, let image = UIImage(data: data)?.resetOrientation() {
+                let exifs = self.metadataForImageData(data: data)
+                callback(image, exifs)
+                
+                // Crop the high quality image manually.
 //                let xCrop: CGFloat = cropRect.origin.x * CGFloat(asset.pixelWidth)
 //                let yCrop: CGFloat = cropRect.origin.y * CGFloat(asset.pixelHeight)
 //                let scaledCropRect = CGRect(x: xCrop,
@@ -44,8 +45,8 @@ extension PHCachingImageManager {
 //                    let exifs = self.metadataForImageData(data: data)
 //                    callback(croppedImage, exifs)
 //                }
-//            }
-//        }
+            }
+        }
     }
     
     private func metadataForImageData(data: Data) -> [String: Any] {

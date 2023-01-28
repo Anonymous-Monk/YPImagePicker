@@ -101,6 +101,7 @@ extension YPLibraryVC {
     
     /// Checks if there can be selected more items. If no - present warning.
     func checkLimit() {
+        delegate?.libraryViewMaxNumberWarning(max: !(!isLimitExceeded || isMultipleSelectionEnabled == false))
         v.maxNumberWarningView.isHidden = !isLimitExceeded || isMultipleSelectionEnabled == false
     }
 }

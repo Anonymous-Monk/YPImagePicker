@@ -17,12 +17,17 @@ public protocol YPImagePickerDelegate: AnyObject {
 
 open class YPImagePicker: UINavigationController {
     public typealias DidFinishPickingCompletion = (_ items: [YPMediaItem], _ cancelled: Bool) -> Void
+    public typealias DidMaxNumberPickingCompletion = (_ max: Bool) -> Void
 
     // MARK: - Public
 
     public weak var imagePickerDelegate: YPImagePickerDelegate?
     public func didFinishPicking(completion: @escaping DidFinishPickingCompletion) {
         _didFinishPicking = completion
+    }
+    
+    public func didMaxNumberPicking(completion: @escaping DidMaxNumberPickingCompletion) {
+        _didMaxNumberPicking = completion
     }
 
     /// Get a YPImagePicker instance with the default configuration.
@@ -54,6 +59,8 @@ open class YPImagePicker: UINavigationController {
     // MARK: - Private
 
     private var _didFinishPicking: DidFinishPickingCompletion?
+    
+    private var _didMaxNumberPicking: DidMaxNumberPickingCompletion?
 
     // This nifty little trick enables us to call the single version of the callbacks.
     // This keeps the backwards compatibility keeps the api as simple as possible.
@@ -170,6 +177,10 @@ open class YPImagePicker: UINavigationController {
 }
 
 extension YPImagePicker: YPPickerVCDelegate {
+    func libraryMaxNumberWarning(max: Bool) {
+        _didMaxNumberPicking?(max)
+    }
+    
     func libraryHasNoItems() {
         self.imagePickerDelegate?.imagePickerHasNoItemsInLibrary(self)
     }
